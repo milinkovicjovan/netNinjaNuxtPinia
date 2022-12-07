@@ -7,7 +7,7 @@
       <p class="text-lg text-secondary my-3">
         {{ product.price }} Silver coins
       </p>
-      <button class="btn">
+      <button class="btn" @click="addToBasket()">
         <span>Add to Basket</span>
       </button>
     </div>
@@ -15,8 +15,15 @@
 </template>
 
 <script setup>
+import { useCartStore } from "@/stores/cartStore";
 // we are accepting prop from index.vue
 const { product } = defineProps(["product"]);
+
+const cartStore = useCartStore();
+
+const addToBasket = async () => {
+  await cartStore.addToCart(product);
+};
 </script>
 
 <style scoped></style>
