@@ -7,8 +7,9 @@
       <p class="text-lg text-secondary my-3">
         {{ product.price }} Silver coins
       </p>
-      <button class="btn" @click="addToBasket()">
-        <span>Add to Basket</span>
+      <button class="btn" @click="addToBasket()" :disabled="isPending">
+        <span v-show="!isPending">Add to Basket</span>
+        <span v-show="isPending">Adding...</span>
       </button>
     </div>
   </div>
@@ -20,9 +21,14 @@ import { useCartStore } from "@/stores/cartStore";
 const { product } = defineProps(["product"]);
 
 const cartStore = useCartStore();
+const isPending = ref(false);
 
 const addToBasket = async () => {
+  isPending.value = true;
   await cartStore.addToCart(product);
+  setTimeout(() => {
+    isPending.value = false;
+  }, 1000);
 };
 </script>
 
